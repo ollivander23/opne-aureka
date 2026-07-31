@@ -16,6 +16,8 @@
 [![DuckDB](https://img.shields.io/badge/DuckDB-Analytics-FFF000?logo=duckdb&logoColor=black)](https://duckdb.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/MrXujiang/opne-aureka/pulls)
 
+**简体中文** · [English](./README.en.md) · [日本語](./README.ja.md)
+
 [快速开始](#-快速开始) · [功能特性](#-功能特性) · [技术架构](#-技术架构) · [配置说明](#-环境配置) · [参与贡献](#-参与贡献)
 
 ![Aureka 演示](./demo.jpg)
