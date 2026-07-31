@@ -1,0 +1,227 @@
+/* ==========================================================================
+   Design Tokens — Dual Theme
+   Dark is the default (defined on :root). Light overrides are applied when
+   <html data-theme="light"> is set by the UI store. Every color used in the
+   app should reference one of these tokens so the whole UI flips cleanly.
+   ========================================================================== */
+
+:root {
+  /* ---- Color System (Dark - default) ---- */
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #0a0a0a;
+  --color-bg-tertiary: #111111;
+  --color-surface: #1a1a1a;
+  --color-surface-hover: #262626;
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-hover: rgba(255, 255, 255, 0.12);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #737373;
+  --color-accent: rgba(255, 255, 255, 0.08);
+
+  /* Hero gradient text (white fading on dark backgrounds) */
+  --grad-from: #ffffff;
+  --grad-to: rgba(255, 255, 255, 0.55);
+
+  /* Opaque surface for sticky elements (e.g. table headers) that must not
+     let scrolled content bleed through. */
+  --color-surface-solid: #1f1f1f;
+  --color-table-header-bg: #1f1f1f;
+  --color-chart-bg: rgba(0, 0, 0, 0.15);
+
+  /* Data-type badge colors (tuned for dark backgrounds) */
+  --type-number: #7dd3fc;
+  --type-date: #c4b5fd;
+  --type-boolean: #86efac;
+
+  /* Code block background */
+  --color-code-bg: rgba(0, 0, 0, 0.3);
+
+  /* Syntax highlighting (One Dark palette, for dark backgrounds) */
+  --code-keyword: #c678dd;
+  --code-string: #98c379;
+  --code-number: #d19a66;
+  --code-comment: #5c6370;
+  --code-function: #61afef;
+  --code-builtin: #e6c07b;
+  --code-literal: #56b6c2;
+
+  /* Semantic status colors (tuned for dark backgrounds) */
+  --status-success: #4ade80;
+  --status-error: #f87171;
+  --status-warning: #facc15;
+
+  /* ---- Neutral overlay scale ------------------------------------------
+     Used for subtle fills / borders / hovers. In dark mode these are white
+     at varying alpha; in light mode they invert to black so the same class
+     produces an appropriate tint on a light background. The suffix is the
+     alpha value x100 (e.g. --ov-06 = alpha 0.06).                        */
+  --ov-02: rgba(255, 255, 255, 0.02);
+  --ov-03: rgba(255, 255, 255, 0.03);
+  --ov-04: rgba(255, 255, 255, 0.04);
+  --ov-05: rgba(255, 255, 255, 0.05);
+  --ov-06: rgba(255, 255, 255, 0.06);
+  --ov-08: rgba(255, 255, 255, 0.08);
+  --ov-10: rgba(255, 255, 255, 0.1);
+  --ov-12: rgba(255, 255, 255, 0.12);
+  --ov-16: rgba(255, 255, 255, 0.16);
+  --ov-30: rgba(255, 255, 255, 0.3);
+
+  /* ---- Glassmorphism ---- */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.06);
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.06);
+  --glass-header-bg: rgba(0, 0, 0, 0.6);
+  --glass-sidebar-bg: rgba(10, 10, 10, 0.8);
+  --glass-modal-bg: rgba(20, 20, 20, 0.9);
+  --glass-input-bg: rgba(255, 255, 255, 0.04);
+  --glass-input-bg-focus: rgba(255, 255, 255, 0.06);
+  --glass-input-border: rgba(255, 255, 255, 0.08);
+  --glass-input-border-focus: rgba(255, 255, 255, 0.16);
+  --glass-overlay-bg: rgba(0, 0, 0, 0.7);
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-pop: 0 16px 48px rgba(0, 0, 0, 0.5);
+
+  /* ---- Scrollbar / Selection / Focus ---- */
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
+  --selection-bg: rgba(255, 255, 255, 0.15);
+  --selection-color: #ffffff;
+  --focus-ring: rgba(255, 255, 255, 0.3);
+
+  /* ---- Border Radius ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* ---- Spacing (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ---- Typography ---- */
+  --font-sans: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+
+  /* ---- Animation ---- */
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  /* ---- Layout ---- */
+  --header-height: 56px;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+  --chat-panel-width: 400px;
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   Light Theme overrides
+   ========================================================================== */
+:root[data-theme='light'] {
+  --color-bg-primary: #f7f7f8;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #f1f1f3;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f3f3f5;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-hover: rgba(0, 0, 0, 0.16);
+  --color-text-primary: #171717;
+  --color-text-secondary: #525252;
+  --color-text-muted: #8a8a8a;
+  --color-accent: rgba(0, 0, 0, 0.06);
+
+  /* Hero gradient text (dark fading on light backgrounds) */
+  --grad-from: #171717;
+  --grad-to: rgba(23, 23, 23, 0.5);
+
+  --color-surface-solid: #ffffff;
+  --color-table-header-bg: #f3f3f5;
+  --color-chart-bg: rgba(0, 0, 0, 0.02);
+
+  /* Data-type badge colors (darker for contrast on light backgrounds) */
+  --type-number: #0284c7;
+  --type-date: #7c3aed;
+  --type-boolean: #16a34a;
+
+  /* Code block background */
+  --color-code-bg: rgba(0, 0, 0, 0.04);
+
+  /* Syntax highlighting (One Light palette, for light backgrounds) */
+  --code-keyword: #a626a4;
+  --code-string: #50a14f;
+  --code-number: #986801;
+  --code-comment: #a0a1a7;
+  --code-function: #4078f2;
+  --code-builtin: #c18401;
+  --code-literal: #0184bc;
+
+  /* Semantic status colors (darker for contrast on light backgrounds) */
+  --status-success: #16a34a;
+  --status-error: #dc2626;
+  --status-warning: #ca8a04;
+
+  /* Overlay scale inverts to black */
+  --ov-02: rgba(0, 0, 0, 0.02);
+  --ov-03: rgba(0, 0, 0, 0.03);
+  --ov-04: rgba(0, 0, 0, 0.04);
+  --ov-05: rgba(0, 0, 0, 0.05);
+  --ov-06: rgba(0, 0, 0, 0.06);
+  --ov-08: rgba(0, 0, 0, 0.08);
+  --ov-10: rgba(0, 0, 0, 0.08);
+  --ov-12: rgba(0, 0, 0, 0.1);
+  --ov-16: rgba(0, 0, 0, 0.12);
+  --ov-30: rgba(0, 0, 0, 0.25);
+
+  /* Frosted white glass */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-border: 1px solid rgba(0, 0, 0, 0.06);
+  --glass-header-bg: rgba(255, 255, 255, 0.75);
+  --glass-sidebar-bg: rgba(250, 250, 251, 0.85);
+  --glass-modal-bg: rgba(255, 255, 255, 0.96);
+  --glass-input-bg: rgba(0, 0, 0, 0.03);
+  --glass-input-bg-focus: rgba(0, 0, 0, 0.05);
+  --glass-input-border: rgba(0, 0, 0, 0.1);
+  --glass-input-border-focus: rgba(0, 0, 0, 0.2);
+  --glass-overlay-bg: rgba(0, 0, 0, 0.35);
+
+  /* Softer shadows for light surfaces */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --shadow-pop: 0 16px 48px rgba(0, 0, 0, 0.16);
+
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+  --selection-bg: rgba(0, 0, 0, 0.12);
+  --selection-color: #171717;
+  --focus-ring: rgba(0, 0, 0, 0.35);
+
+  color-scheme: light;
+}
