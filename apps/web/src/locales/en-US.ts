@@ -35,6 +35,9 @@ export default {
     ecoPxcharts: 'pxcharts Super Table',
     github: 'GitHub Repository',
     aiBook: 'AI Full-Stack Manual',
+    trialCommercial: 'Try Commercial',
+    contactAuthor: 'Contact Author',
+    contactAuthorDesc: 'Scan the QR code to follow me on X (Twitter)',
   },
   home: {
     heroTitle: 'Intelligent Data Analysis',

@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router';
 import { useUIStore } from '@/stores/ui';
 import { useUserStore } from '@/stores/user';
-import { PanelLeftClose, PanelLeftOpen, Settings, Languages, Sun, Moon, Github, BookOpen, LogOut } from 'lucide-vue-next';
+import { PanelLeftClose, PanelLeftOpen, Settings, Languages, Sun, Moon, Github, BookOpen, LogOut, Rocket } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
 import { setLocale, getLocale } from '@/locales';
 import type { LocaleKey } from '@/locales';
@@ -45,6 +45,16 @@ function handleLogout() {
       >
         <BookOpen :size="14" />
         <span>{{ t('nav.aiBook') }}</span>
+      </a>
+      <a
+        class="app-header__trial"
+        href="http://aureka.jitword.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        :title="t('nav.trialCommercial')"
+      >
+        <Rocket :size="14" />
+        <span>{{ t('nav.trialCommercial') }}</span>
       </a>
       <a
         class="app-header__action"
@@ -208,6 +218,58 @@ function handleLogout() {
 
 .app-header__book:active {
   transform: translateY(0);
+}
+
+/* Commercial trial CTA — eye-catching animated gradient pill, deliberately the
+   most prominent action in the header to draw users to the paid product. */
+.app-header__trial {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: 30px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full, 999px);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  color: #ffffff;
+  background: linear-gradient(135deg, #7c3aed 0%, #d946ef 50%, #f43f5e 100%);
+  background-size: 200% 200%;
+  animation: trial-gradient 4s ease infinite;
+  box-shadow: 0 2px 12px rgba(217, 70, 239, 0.45);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.app-header__trial::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #7c3aed, #d946ef, #f43f5e);
+  opacity: 0;
+  filter: blur(8px);
+  z-index: -1;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.app-header__trial:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(217, 70, 239, 0.55);
+}
+
+.app-header__trial:hover::after {
+  opacity: 0.6;
+}
+
+.app-header__trial:active {
+  transform: translateY(0) scale(1);
+}
+
+@keyframes trial-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .app-header__user {

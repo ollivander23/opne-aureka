@@ -35,6 +35,9 @@ export default {
     ecoPxcharts: 'pxcharts超级表格',
     github: 'GitHub 仓库',
     aiBook: 'AI全栈学习手册',
+    trialCommercial: '体验商业版',
+    contactAuthor: '联系作者',
+    contactAuthorDesc: '扫码添加微信，交流合作',
   },
   home: {
     heroTitle: '智能数据分析',
