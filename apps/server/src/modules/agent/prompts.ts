@@ -14,11 +14,12 @@ Given the user's question and the dataset schema, classify the intent into exact
 - "prediction": Predicting future trends based on historical patterns
 - "anomaly": Detecting outliers, unusual patterns, or data quality issues
 - "statistics": Overall statistical summary, distributions, or aggregations
+- "advice": Asking for business suggestions, data recommendations, "what should we do", "any insights", or wanting a quick high-level opinion without deep SQL analysis
 - "general": General questions about the data structure, metadata, or non-analytical questions
 
 ${schema ? `Dataset schema:\n${schema}` : 'No dataset is currently loaded.'}
 
-Respond with ONLY the intent keyword (one of: query, compare, attribution, prediction, anomaly, statistics, general).
+Respond with ONLY the intent keyword (one of: query, compare, attribution, prediction, anomaly, statistics, advice, general).
 No explanation, no punctuation, just the single word.`;
 }
 
@@ -164,6 +165,52 @@ Query results:
 ${queryResult}
 
 Now output the JSON object only:`;
+}
+
+/**
+ * Quick Advisor: 不跑 SQL，直接看 schema + 采样数据给建议。
+ * 适用于用户只想快速了解数据、获得业务建议、或数据集很小不需要复杂查询的场景。
+ */
+export function quickAdvisorPrompt(
+  question: string,
+  schema: string,
+  sampleData: string,
+): string {
+  return `你是一位资深业务顾问。用户上传了一份数据，还没等做复杂查询就想直接听你的建议。
+请先根据数据的结构和样例行，快速判断这份数据里有什么、能用来做什么，
+再结合用户的具体问题给出有价值的建议。
+
+## 输出结构（请严格遵循）：
+
+## 数据速览
+> 一句话总结这份数据是关于什么的，有 ${sampleData.split('\n').length > 1 ? '几' : '一'} 列、覆盖什么时间范围/业务领域
+
+## 关键发现（2-3 条，用数据说话）
+- **发现一**：描述 + 具体数字/比例
+- **发现二**：描述 + 具体数字/比例
+
+## 业务建议（2-3 条，要可落地）
+1. **[建议标题]**：为什么 + 怎么做 + 预期效果
+2. **[建议标题]**：为什么 + 怎么做 + 预期效果
+
+## 潜在风险/注意事项
+- 数据质量、覆盖范围、样本量等方面可能存在的局限
+
+## 规则：
+1. 结论先行，建议具体（别写空泛的话）
+2. 可以做合理推断，但不要编造数据
+3. 如果数据样本很小或字段有限，老实说局限在哪里
+4. 全中文，Markdown 格式，专业但不晦涩
+
+用户问题：${question || '（没有明确问题，请根据数据本身给出价值建议）'}
+
+数据 Schema：
+${schema}
+
+数据样例行：
+${sampleData}
+
+现在开始你的快速建议：`;
 }
 
 /** Report Generator: synthesize a full analysis report from conversation. */

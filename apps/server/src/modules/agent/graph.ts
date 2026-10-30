@@ -7,6 +7,7 @@ import {
   sqlGeneratorPrompt,
   analysisPrompt,
   chartAdvisorPrompt,
+  quickAdvisorPrompt,
 } from './prompts';
 
 // ---- Event types emitted during graph execution ----
@@ -63,7 +64,7 @@ async function intentRouter(state: AgentState): Promise<Partial<AgentState>> {
   const response = await llmCall(llmService, intentRouterPrompt(schema), question);
 
   // Extract intent keyword from response
-  const validIntents = ['query', 'compare', 'attribution', 'prediction', 'anomaly', 'statistics', 'general'];
+  const validIntents = ['query', 'compare', 'attribution', 'prediction', 'anomaly', 'statistics', 'advice', 'general'];
   const cleaned = response.toLowerCase().replace(/[^a-z]/g, '');
   const intent = validIntents.includes(cleaned) ? cleaned : 'general';
 
@@ -168,6 +169,38 @@ async function analyst(state: AgentState): Promise<Partial<AgentState>> {
   return { analysis: full };
 }
 
+// ---- Node: Quick Advisor (NO SQL, direct suggestion from schema + sample) ----
+// 跳过 SQL 查询，直接让 AI 看数据结构和样例行给建议。
+// 适用于：用户要业务建议、快速看数据价值、数据集很小不需要复杂查询。
+async function quickAdvisor(state: AgentState): Promise<Partial<AgentState>> {
+  const { question, schema, tableName, llmService, analysisService, emit } = state;
+
+  emit({ type: 'status', data: { phase: 'advising', label: '快速分析数据结构，生成建议...' } });
+
+  // 拿更多样例行给 AI 参考（20 行而不是 5 行）
+  let sampleStr = '(无数据样例可用)';
+  try {
+    const sample = await analysisService.getSampleRows(tableName, 20);
+    if (sample.rows.length > 0) {
+      sampleStr = [sample.columns.join(' | '), ...sample.rows.map((r) => r.join(' | '))].join('\n');
+    }
+  } catch { /* ignore */ }
+
+  const systemPrompt = quickAdvisorPrompt(question, schema, sampleStr);
+  const messages: ChatMessage[] = [
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: question || '请直接给出建议' },
+  ];
+
+  let full = '';
+  await llmService.streamChat(messages, (token) => {
+    full += token;
+    emit({ type: 'token', data: { content: token, role: 'assistant' } });
+  });
+
+  return { analysis: full };
+}
+
 // ---- Node: Chart Advisor ----
 // Strategy: the deterministic builder is the PRIMARY source. It guarantees a
 // consistently ordered axis and a chart type matched to the data shape, which
@@ -254,6 +287,10 @@ function extractJson(text: string): Record<string, unknown> | null {
 // ---- Routing logic ----
 
 function routeAfterIntent(state: AgentState): string {
+  // 新增：advice 意图走快速建议路径（不跑 SQL）
+  if (state.intent === 'advice' && state.tableName) {
+    return 'quickAdvisor';
+  }
   const dataIntents = ['query', 'compare', 'statistics', 'anomaly', 'attribution'];
   if (dataIntents.includes(state.intent) && state.tableName) {
     return 'sqlGenerator';
@@ -270,15 +307,18 @@ export function buildAgentGraph() {
     .addNode('sqlExecutor', sqlExecutor)
     .addNode('analyst', analyst)
     .addNode('chartAdvisor', chartAdvisor)
+    .addNode('quickAdvisor', quickAdvisor)  // 新增：快速建议节点
     .addEdge('__start__', 'intentRouter')
     .addConditionalEdges('intentRouter', routeAfterIntent, {
       sqlGenerator: 'sqlGenerator',
       analyst: 'analyst',
+      quickAdvisor: 'quickAdvisor',  // 新增路由分支
     })
     .addEdge('sqlGenerator', 'sqlExecutor')
     .addEdge('sqlExecutor', 'analyst')
     .addEdge('analyst', 'chartAdvisor')
-    .addEdge('chartAdvisor', END);
+    .addEdge('chartAdvisor', END)
+    .addEdge('quickAdvisor', END);  // 快速建议直接结束，不画图
 
   return graph.compile();
 }
